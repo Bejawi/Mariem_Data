@@ -343,6 +343,12 @@ section{scroll-margin-top:var(--nav-h);}
   font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
   color:var(--sable);width:96px;text-align:right;flex:none;
 }
+.langue-cert{
+  margin-top:16px;padding:10px 14px;display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--or);font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+  letter-spacing:.06em;color:var(--or-fonce);background:rgba(182,138,70,.08);
+}
+.langue-cert::before{content:"✓";color:var(--or);font-weight:600;}
 .assoc-list li{
   padding:12px 0;border-top:1px solid var(--ligne-l);font-size:.92rem;display:flex;gap:10px;
 }
@@ -435,8 +441,21 @@ section{scroll-margin-top:var(--nav-h);}
   color:var(--or-fonce);
 }
 .projet-card__metric{
-  font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.04em;color:var(--saphir);
-  border:1px solid var(--saphir-clair);padding:3px 8px;white-space:nowrap;
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.05em;
+  color:var(--ivoire);white-space:nowrap;position:relative;
+  padding:6px 14px 6px 12px;border-radius:999px;
+  background:linear-gradient(135deg,var(--saphir) 0%,var(--saphir-clair) 100%);
+  box-shadow:0 4px 12px -4px rgba(40,57,94,.55),inset 0 1px 0 rgba(255,255,255,.12);
+  display:inline-flex;align-items:center;gap:6px;
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.projet-card__metric::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--or-clair);flex:none;
+  box-shadow:0 0 0 3px rgba(227,195,131,.25);
+}
+.projet-card:hover .projet-card__metric{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px -6px rgba(40,57,94,.65),inset 0 1px 0 rgba(255,255,255,.16);
 }
 .projet-card h3{font-size:1.22rem;color:var(--encre);margin-bottom:12px;line-height:1.25;}
 .projet-card__graph{
@@ -452,8 +471,8 @@ section{scroll-margin-top:var(--nav-h);}
 }
 .projet-card__link{
   font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--or-fonce);border-bottom:1px solid transparent;align-self:flex-start;
-  transition:border-color .3s ease,color .3s ease;
+  color:var(--or-fonce);border:none;border-bottom:1px solid transparent;align-self:flex-start;
+  transition:border-color .3s ease,color .3s ease;background:none;padding:0;cursor:pointer;
 }
 .projet-card__link:hover{border-color:var(--or-fonce);color:var(--saphir);}
 .projets__note{
@@ -480,13 +499,72 @@ section{scroll-margin-top:var(--nav-h);}
 .blog-card p{font-size:.9rem;color:var(--sable-clair);line-height:1.6;margin-bottom:22px;flex:1;}
 .blog-card__link{
   font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--or-clair);align-self:flex-start;border-bottom:1px solid transparent;
-  transition:border-color .3s ease;
+  color:var(--or-clair);align-self:flex-start;border:none;border-bottom:1px solid transparent;
+  transition:border-color .3s ease;background:none;padding:0;cursor:pointer;
 }
 .blog-card__link:hover{border-color:var(--or-clair);}
 .blog__note{
   margin-top:48px;font-family:'IBM Plex Mono',monospace;font-size:.74rem;color:var(--sable-clair);
   border-top:1px solid var(--ligne-d);padding-top:20px;
+}
+
+/* ============================================================
+   MODAL (détails projets & articles blog)
+   ============================================================ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:400;background:rgba(18,15,12,.72);
+  backdrop-filter:blur(4px);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:70px 24px;overflow-y:auto;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.modal-overlay.is-open{opacity:1;pointer-events:auto;}
+.modal{
+  background:var(--ivoire);max-width:720px;width:100%;position:relative;
+  border:1px solid var(--ligne-l);padding:52px 52px 46px;
+  transform:translateY(18px);transition:transform .35s ease;
+}
+.modal-overlay.is-open .modal{transform:translateY(0);}
+.modal::before,.modal::after{
+  content:"";position:absolute;width:18px;height:18px;border-top:1px solid var(--or);border-left:1px solid var(--or);
+}
+.modal::before{top:-1px;left:-1px;}
+.modal::after{bottom:-1px;right:-1px;border:none;border-bottom:1px solid var(--or);border-right:1px solid var(--or);}
+.modal__close{
+  position:absolute;top:20px;right:20px;width:38px;height:38px;
+  border:1px solid var(--ligne-l);background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:1rem;color:var(--sable);
+  transition:border-color .3s ease,color .3s ease;
+}
+.modal__close:hover{border-color:var(--or);color:var(--or-fonce);}
+.modal__ref{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--or-fonce);display:flex;align-items:center;gap:12px;margin-bottom:16px;
+}
+.modal__meta{
+  font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--saphir);border:1px solid var(--saphir-clair);padding:3px 10px;
+}
+.modal h3{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:22px;max-width:26ch;line-height:1.25;}
+.modal__body{font-size:.94rem;color:#3a352f;line-height:1.75;}
+.modal__body p{margin-bottom:16px;}
+.modal__body h4{
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--or-fonce);margin:26px 0 10px;
+}
+.modal__body ul{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.modal__body ul li{padding-left:20px;position:relative;}
+.modal__body ul li::before{content:"—";position:absolute;left:0;color:var(--or);}
+.modal__stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;padding-top:20px;border-top:1px solid var(--ligne-l);}
+.modal__stack span{
+  font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--ligne-l);padding:5px 10px;color:#4a443b;
+}
+body.modal-open{overflow:hidden;}
+@media (max-width:600px){
+  .modal{padding:70px 26px 36px;}
+  .modal-overlay{padding:0;}
 }
 
 /* ============================================================
@@ -731,7 +809,7 @@ section{scroll-margin-top:var(--nav-h);}
         <div class="projet-card__stack">
           <span>Python</span><span>Scikit-learn</span><span>OpenCV</span><span>ETL/ELT</span>
         </div>
-        <a class="projet-card__link" href="#contact">En savoir plus ↗</a>
+        <button class="projet-card__link" type="button" data-project="p1">En savoir plus ↗</button>
       </article>
 
       <article class="projet-card" style="--i:1">
@@ -754,7 +832,7 @@ section{scroll-margin-top:var(--nav-h);}
         <div class="projet-card__stack">
           <span>NLP</span><span>LLM</span><span>Python</span><span>Pandas</span>
         </div>
-        <a class="projet-card__link" href="#contact">En savoir plus ↗</a>
+        <button class="projet-card__link" type="button" data-project="p2">En savoir plus ↗</button>
       </article>
 
       <article class="projet-card" style="--i:2">
@@ -777,7 +855,7 @@ section{scroll-margin-top:var(--nav-h);}
         <div class="projet-card__stack">
           <span>Clustering</span><span>Scikit-learn</span><span>Power BI</span><span>SQL</span>
         </div>
-        <a class="projet-card__link" href="#contact">En savoir plus ↗</a>
+        <button class="projet-card__link" type="button" data-project="p3">En savoir plus ↗</button>
       </article>
 
       <article class="projet-card" style="--i:3">
@@ -802,7 +880,7 @@ section{scroll-margin-top:var(--nav-h);}
         <div class="projet-card__stack">
           <span>Power BI</span><span>DAX</span><span>SQL</span><span>Data Storytelling</span>
         </div>
-        <a class="projet-card__link" href="#contact">En savoir plus ↗</a>
+        <button class="projet-card__link" type="button" data-project="p4">En savoir plus ↗</button>
       </article>
 
       <article class="projet-card" style="--i:4">
@@ -825,7 +903,7 @@ section{scroll-margin-top:var(--nav-h);}
         <div class="projet-card__stack">
           <span>dbt</span><span>SQL</span><span>Docker</span><span>Git</span>
         </div>
-        <a class="projet-card__link" href="#contact">En savoir plus ↗</a>
+        <button class="projet-card__link" type="button" data-project="p5">En savoir plus ↗</button>
       </article>
 
       <article class="projet-card" style="--i:5">
@@ -844,11 +922,11 @@ section{scroll-margin-top:var(--nav-h);}
         <div class="projet-card__stack">
           <span>SQL</span><span>Power BI</span><span>E-commerce Analytics</span>
         </div>
-        <a class="projet-card__link" href="#contact">En savoir plus ↗</a>
+        <button class="projet-card__link" type="button" data-project="p6">En savoir plus ↗</button>
       </article>
 
     </div>
-    <p class="projets__note reveal">Sélection de projets menés en entreprise — les graphiques illustrent la nature de chaque cas (tendance, distribution, segmentation). Liens vers dépôts ou études de cas à intégrer pour chaque carte.</p>
+    <p class="projets__note reveal">Sélection de projets menés en entreprise — les graphiques illustrent la nature de chaque cas (tendance, distribution, segmentation).</p>
   </div>
 </section>
 
@@ -894,22 +972,21 @@ section{scroll-margin-top:var(--nav-h);}
         <p class="blog-card__meta"><span>Data Engineering</span><span>5 min</span></p>
         <h3>Construire des pipelines ETL/ELT fiables en environnement industriel</h3>
         <p>Retour d'expérience sur la mise en place de contrôles qualité automatisés et d'une architecture en couches (staging, transformation, exposition).</p>
-        <a class="blog-card__link" href="#contact">Lire l'article ↗</a>
+        <button class="blog-card__link" type="button" data-blog="b1">Lire l'article ↗</button>
       </article>
       <article class="blog-card" style="--i:1">
         <p class="blog-card__meta"><span>BI &amp; Reporting</span><span>4 min</span></p>
         <h3>Du SQL au dashboard&nbsp;: structurer le storytelling avec la donnée</h3>
         <p>Comment passer de requêtes SQL complexes à des dashboards Power BI lisibles et orientés décision pour les équipes métier.</p>
-        <a class="blog-card__link" href="#contact">Lire l'article ↗</a>
+        <button class="blog-card__link" type="button" data-blog="b2">Lire l'article ↗</button>
       </article>
       <article class="blog-card" style="--i:2">
         <p class="blog-card__meta"><span>Machine Learning</span><span>6 min</span></p>
         <h3>Clustering &amp; segmentation client&nbsp;: au-delà des KPI classiques</h3>
         <p>Application du clustering à des données comportementales pour identifier des profils d'acheteurs et orienter une stratégie marketing.</p>
-        <a class="blog-card__link" href="#contact">Lire l'article ↗</a>
+        <button class="blog-card__link" type="button" data-blog="b3">Lire l'article ↗</button>
       </article>
     </div>
-    <p class="blog__note reveal">Section dédiée à des publications futures (articles, retours d'expérience, veille technique). Chaque carte peut être reliée à un article complet (Medium, LinkedIn, ou page dédiée du site).</p>
   </div>
 </section>
 
@@ -964,6 +1041,7 @@ section{scroll-margin-top:var(--nav-h);}
           <div class="bar"><span style="width:55%"></span></div>
           <span class="niv">Intermédiaire</span>
         </div>
+        <p class="langue-cert">Certification — TOEIC B2 (Anglais)</p>
       </div>
       <div class="reveal">
         <h3>Vie associative</h3>
@@ -992,12 +1070,12 @@ section{scroll-margin-top:var(--nav-h);}
         </span>
       </div>
       <div class="contact__row">
-        <span class="k">Téléphone</span>
-        <a class="v" href="tel:+33753108788">+33 7 53 10 87 88</a>
+        <span class="k">GitHub</span>
+        <a class="v" href="https://github.com/Bejawi" target="_blank" rel="noopener">github.com/Bejawi ↗</a>
       </div>
       <div class="contact__row">
         <span class="k">LinkedIn</span>
-        <a class="v" href="https://linkedin.com/in/Mariem-BJAOUI" target="_blank" rel="noopener">linkedin.com/in/Mariem-BJAOUI ↗</a>
+        <a class="v" href="https://www.linkedin.com/in/mariem-bejaoui1/" target="_blank" rel="noopener">linkedin.com/in/mariem-bejaoui1 ↗</a>
       </div>
       <div class="contact__row">
         <span class="k">Localisation</span>
@@ -1014,6 +1092,13 @@ section{scroll-margin-top:var(--nav-h);}
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalContent">
+    <button class="modal__close" id="modalClose" aria-label="Fermer">✕</button>
+    <div id="modalInner"></div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -1086,6 +1171,231 @@ section{scroll-margin-top:var(--nav-h);}
       for (var f=0;f<fallbackEls.length;f++){ fallbackEls[f].classList.add('is-visible'); }
     }catch(e2){}
   }
+
+  // Modal — détails Projets & articles Blog
+  try{
+    var projetData = {
+      p1:{
+        ref:"Projet 01 — Farness",
+        metric:"−34% incidents",
+        title:"Détection d'anomalies — Capteurs IoT",
+        stack:["Python","Scikit-learn","OpenCV","ETL/ELT"],
+        body:
+          '<h4>Contexte</h4>'+
+          '<p>Chez Farness, les drones autonomes remontent en continu des flux de données issues de multiples capteurs embarqués (IMU, température, vibration, vision). Le volume et la vitesse de ces flux rendaient la détection manuelle des dérives impossible à maintenir, avec un risque direct sur la fiabilité des vols et la maintenance prédictive.</p>'+
+          '<h4>Démarche</h4>'+
+          '<ul>'+
+            '<li>Collecte et nettoyage des séries temporelles multi-capteurs, avec gestion des valeurs manquantes et du bruit de mesure.</li>'+
+            '<li>Construction d\'un modèle de détection d\'anomalies (Isolation Forest / méthodes statistiques) sur les flux normalisés.</li>'+
+            '<li>Ajout d\'un module de vision par ordinateur (OpenCV) pour corréler les signaux capteurs avec des indices visuels de défaillance.</li>'+
+            '<li>Mise en place d\'un pipeline ETL/ELT pour industrialiser l\'ingestion et le scoring en quasi temps réel.</li>'+
+          '</ul>'+
+          '<h4>Résultats</h4>'+
+          '<p>Le modèle a permis une réduction de 34% des incidents liés aux défaillances système, en anticipant les signaux faibles avant la panne, tout en réduisant la charge de supervision manuelle des équipes techniques.</p>'
+      },
+      p2:{
+        ref:"Projet 02 — Decade",
+        metric:"+27% satisfaction",
+        title:"Assistant conversationnel NLP & LLM",
+        stack:["NLP","LLM","Python","Pandas"],
+        body:
+          '<h4>Contexte</h4>'+
+          '<p>Dans un contexte e-commerce chez Decade, le service client faisait face à un volume croissant de demandes répétitives (suivi de commande, retours, disponibilité produit), avec des temps de réponse jugés trop longs par les utilisateurs.</p>'+
+          '<h4>Démarche</h4>'+
+          '<ul>'+
+            '<li>Analyse des historiques de conversations pour identifier les intentions récurrentes et les formuler en taxonomie exploitable.</li>'+
+            '<li>Construction d\'un assistant conversationnel combinant NLP classique (classification d\'intention) et un LLM pour la génération de réponses contextualisées.</li>'+
+            '<li>Boucle d\'évaluation continue (précision d\'intention, pertinence des réponses) avec Pandas pour le suivi des métriques.</li>'+
+            '<li>Intégration progressive avec escalade automatique vers un agent humain pour les cas complexes.</li>'+
+          '</ul>'+
+          '<h4>Résultats</h4>'+
+          '<p>L\'assistant atteint 75% de précision sur la reconnaissance d\'intention et a permis une hausse de 27% de la satisfaction client, tout en réduisant sensiblement le temps de traitement des demandes de premier niveau.</p>'
+      },
+      p3:{
+        ref:"Projet 03 — Decade",
+        metric:"4 segments",
+        title:"Segmentation client par clustering",
+        stack:["Clustering","Scikit-learn","Power BI","SQL"],
+        body:
+          '<h4>Contexte</h4>'+
+          '<p>L\'équipe marketing de Decade souhaitait dépasser les segmentations démographiques classiques pour comprendre les comportements d\'achat réels de sa base client et adapter ses campagnes en conséquence.</p>'+
+          '<h4>Démarche</h4>'+
+          '<ul>'+
+            '<li>Extraction et préparation des données transactionnelles via SQL (fréquence d\'achat, panier moyen, récence, catégories favorites).</li>'+
+            '<li>Application de techniques de clustering (K-Means, analyse de silhouette) pour déterminer le nombre optimal de segments.</li>'+
+            '<li>Caractérisation de 4 profils types d\'acheteurs avec leurs comportements distinctifs.</li>'+
+            '<li>Restitution des segments dans un dashboard Power BI pour un usage direct par les équipes marketing.</li>'+
+          '</ul>'+
+          '<h4>Résultats</h4>'+
+          '<p>La segmentation en 4 profils a permis d\'orienter les campagnes marketing par typologie d\'acheteur, avec un ciblage plus précis et des messages adaptés à chaque comportement d\'achat.</p>'
+      },
+      p4:{
+        ref:"Projet 04 — Enova Robotics",
+        metric:"Temps réel",
+        title:"Dashboards décisionnels Power BI",
+        stack:["Power BI","DAX","SQL","Data Storytelling"],
+        body:
+          '<h4>Contexte</h4>'+
+          '<p>Chez Enova Robotics, les équipes opérationnelles et la direction manquaient d\'une vision consolidée et actualisée des indicateurs clés (production, qualité, e-commerce, produit), dispersés dans plusieurs systèmes.</p>'+
+          '<h4>Démarche</h4>'+
+          '<ul>'+
+            '<li>Modélisation des données sources via SQL pour construire un socle fiable et cohérent.</li>'+
+            '<li>Développement de mesures DAX avancées pour les KPI métier (taux de service, performance produit, indicateurs e-commerce).</li>'+
+            '<li>Conception de dashboards Power BI pensés pour la lecture rapide (data storytelling) à destination de deux publics : opérationnel et direction.</li>'+
+            '<li>Mise en place d\'une actualisation en temps réel pour un pilotage réactif.</li>'+
+          '</ul>'+
+          '<h4>Résultats</h4>'+
+          '<p>Les équipes disposent désormais d\'un pilotage en temps réel de leurs indicateurs opérationnels, facilitant la prise de décision et la détection rapide des écarts de performance.</p>'
+      },
+      p5:{
+        ref:"Projet 05 — Farness",
+        metric:"Auto. flux",
+        title:"Pipelines ETL/ELT & Data Quality",
+        stack:["dbt","SQL","Docker","Git"],
+        body:
+          '<h4>Contexte</h4>'+
+          '<p>Les flux de données chez Farness reposaient en partie sur des traitements manuels sujets à erreurs, ralentissant la mise à disposition d\'une donnée fiable pour les équipes techniques et métier.</p>'+
+          '<h4>Démarche</h4>'+
+          '<ul>'+
+            '<li>Conception d\'une architecture en couches (staging, transformation, exposition) avec dbt pour structurer la transformation de la donnée.</li>'+
+            '<li>Écriture de contrôles qualité automatisés (tests de cohérence, de complétude, de fraîcheur des données) à chaque étape du pipeline.</li>'+
+            '<li>Conteneurisation des traitements avec Docker et versioning du code avec Git pour fiabiliser les déploiements.</li>'+
+            '<li>Documentation technique des flux pour faciliter la maintenance et l\'onboarding.</li>'+
+          '</ul>'+
+          '<h4>Résultats</h4>'+
+          '<p>L\'automatisation des flux et des contrôles qualité a fortement réduit les interventions manuelles, tout en augmentant la fiabilité et la traçabilité de la donnée mise à disposition.</p>'
+      },
+      p6:{
+        ref:"Projet 06 — RIMOWA",
+        metric:"Groupe LVMH",
+        title:"Analyse e-commerce — RIMOWA",
+        stack:["SQL","Power BI","E-commerce Analytics"],
+        body:
+          '<h4>Contexte</h4>'+
+          '<p>Au sein du pôle e-commerce de RIMOWA (Groupe LVMH), le suivi de la performance digitale nécessite une lecture fine du trafic, de la conversion et du comportement d\'achat, dans un univers exigeant où chaque détail compte.</p>'+
+          '<h4>Démarche</h4>'+
+          '<ul>'+
+            '<li>Extraction et structuration des données de trafic et de vente via SQL, en lien avec les équipes techniques.</li>'+
+            '<li>Construction d\'indicateurs de performance digitale (taux de conversion, parcours d\'achat, comportement par segment).</li>'+
+            '<li>Restitution via des dashboards Power BI adaptés aux standards de reporting du Groupe LVMH.</li>'+
+            '<li>Suivi régulier des indicateurs pour accompagner les décisions du pôle e-commerce.</li>'+
+          '</ul>'+
+          '<h4>Résultats</h4>'+
+          '<p>Une lecture plus précise et régulière de la performance digitale, appuyant les décisions du pôle e-commerce sur des indicateurs fiables et actualisés.</p>'
+      }
+    };
+
+    var blogData = {
+      b1:{
+        meta:["Data Engineering","5 min"],
+        title:"Construire des pipelines ETL/ELT fiables en environnement industriel",
+        body:
+          '<p>Dans un environnement industriel, la donnée transite par de multiples systèmes avant d\'être exploitable : capteurs, bases opérationnelles, outils métier. Sans architecture claire, ces flux deviennent vite fragiles et difficiles à maintenir.</p>'+
+          '<h4>Une architecture en couches</h4>'+
+          '<p>L\'approche retenue repose sur trois couches distinctes. La couche de staging accueille la donnée brute, sans transformation, pour garder une trace fidèle de la source. La couche de transformation applique les règles de nettoyage, de jointure et d\'agrégation nécessaires. Enfin, la couche d\'exposition rend la donnée disponible pour les usages métier (reporting, dashboards, modèles).</p>'+
+          '<h4>Des contrôles qualité automatisés</h4>'+
+          '<p>Chaque étape du pipeline est accompagnée de tests automatisés&nbsp;: vérification de la complétude des données, cohérence des types, fraîcheur des mises à jour et détection des valeurs aberrantes. Ces contrôles, intégrés directement dans le pipeline, permettent de bloquer une donnée défaillante avant qu\'elle n\'atteigne les couches exposées aux utilisateurs.</p>'+
+          '<h4>Ce que cela change au quotidien</h4>'+
+          '<p>Cette structuration réduit considérablement les interventions manuelles et le temps passé à investiguer des anomalies après coup. Elle donne aussi une base de confiance aux équipes métier, qui peuvent s\'appuyer sur la donnée sans avoir à la revérifier systématiquement.</p>'+
+          '<h4>Points de vigilance</h4>'+
+          '<ul>'+
+            '<li>Bien documenter chaque couche pour faciliter la maintenance et l\'arrivée de nouveaux contributeurs.</li>'+
+            '<li>Prioriser les contrôles qualité sur les données à plus fort impact métier plutôt que de tout tester dès le départ.</li>'+
+            '<li>Prévoir une stratégie de gestion des erreurs claire&nbsp;: alerte, blocage ou correction automatique selon la criticité.</li>'+
+          '</ul>'
+      },
+      b2:{
+        meta:["BI & Reporting","4 min"],
+        title:"Du SQL au dashboard : structurer le storytelling avec la donnée",
+        body:
+          '<p>Une requête SQL bien écrite ne suffit pas à elle seule à générer de la valeur&nbsp;: encore faut-il que son résultat soit compris et exploité par les équipes métier. C\'est là qu\'intervient le travail de mise en récit de la donnée.</p>'+
+          '<h4>Partir de la question métier</h4>'+
+          '<p>Avant d\'écrire la moindre ligne de SQL, il est essentiel de clarifier la question à laquelle le dashboard doit répondre. Un indicateur pertinent mais mal contextualisé perd une grande partie de sa valeur décisionnelle.</p>'+
+          '<h4>Structurer la donnée pour la lecture</h4>'+
+          '<p>Le passage du SQL au dashboard implique de simplifier sans dénaturer&nbsp;: agréger au bon niveau, choisir les bonnes dimensions temporelles, et éviter la surcharge d\'indicateurs sur un même écran. Power BI, via DAX, permet de construire des mesures dynamiques qui s\'adaptent aux filtres choisis par l\'utilisateur.</p>'+
+          '<h4>Hiérarchiser l\'information</h4>'+
+          '<p>Un bon dashboard guide le regard&nbsp;: les indicateurs les plus critiques en premier, un niveau de détail croissant pour qui veut approfondir. Cette hiérarchisation transforme un ensemble de chiffres en un véritable outil de pilotage.</p>'+
+          '<h4>Points de vigilance</h4>'+
+          '<ul>'+
+            '<li>Impliquer les utilisateurs métier tôt dans la conception pour valider la pertinence des indicateurs.</li>'+
+            '<li>Limiter le nombre de KPI affichés simultanément pour préserver la lisibilité.</li>'+
+            '<li>Prévoir des définitions claires et partagées pour chaque indicateur, afin d\'éviter les interprétations divergentes.</li>'+
+          '</ul>'
+      },
+      b3:{
+        meta:["Machine Learning","6 min"],
+        title:"Clustering & segmentation client : au-delà des KPI classiques",
+        body:
+          '<p>Les segmentations traditionnelles (âge, zone géographique, ancienneté) donnent une première lecture utile, mais elles passent souvent à côté des comportements d\'achat réels des clients.</p>'+
+          '<h4>Pourquoi le clustering</h4>'+
+          '<p>Les techniques de clustering permettent de faire émerger des groupes de clients à partir de leurs comportements observés&nbsp;: fréquence d\'achat, panier moyen, récence, catégories privilégiées. Ces groupes ne sont pas définis a priori, mais découverts à partir de la donnée elle-même.</p>'+
+          '<h4>De la donnée brute aux profils exploitables</h4>'+
+          '<p>Le travail commence par une préparation rigoureuse des variables (normalisation, réduction de dimension si nécessaire), suivie d\'un choix éclairé du nombre de segments via des indicateurs comme le score de silhouette. Chaque segment est ensuite caractérisé de manière lisible pour les équipes marketing.</p>'+
+          '<h4>Une nuance essentielle</h4>'+
+          '<p>Un clustering technique n\'a de valeur que s\'il est traduit en profils actionnables&nbsp;: donner un nom, une histoire et des recommandations concrètes à chaque segment, plutôt que de s\'arrêter à des numéros de cluster.</p>'+
+          '<h4>Points de vigilance</h4>'+
+          '<ul>'+
+            '<li>Réévaluer régulièrement les segments&nbsp;: les comportements d\'achat évoluent dans le temps.</li>'+
+            '<li>Ne pas multiplier excessivement les segments au risque de perdre en actionnabilité.</li>'+
+            '<li>Coupler le clustering à des indicateurs de performance pour mesurer l\'impact réel des actions ciblées.</li>'+
+          '</ul>'
+      }
+    };
+
+    var overlay = document.getElementById('modalOverlay');
+    var modalInner = document.getElementById('modalInner');
+    var modalClose = document.getElementById('modalClose');
+    var lastFocused = null;
+
+    function openModal(html){
+      modalInner.innerHTML = html;
+      overlay.classList.add('is-open');
+      document.body.classList.add('modal-open');
+      lastFocused = document.activeElement;
+      modalClose.focus();
+    }
+    function closeModal(){
+      overlay.classList.remove('is-open');
+      document.body.classList.remove('modal-open');
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    function renderProjet(d){
+      var stackHtml = '';
+      for (var i=0;i<d.stack.length;i++){ stackHtml += '<span>'+d.stack[i]+'</span>'; }
+      return '<p class="modal__ref" id="modalTitle">'+d.ref+' <span class="modal__meta">'+d.metric+'</span></p>'+
+        '<h3>'+d.title+'</h3>'+
+        '<div class="modal__body">'+d.body+'</div>'+
+        '<div class="modal__stack">'+stackHtml+'</div>';
+    }
+    function renderBlog(d){
+      return '<p class="modal__ref" id="modalTitle">'+d.meta[0]+' <span class="modal__meta">'+d.meta[1]+'</span></p>'+
+        '<h3>'+d.title+'</h3>'+
+        '<div class="modal__body">'+d.body+'</div>';
+    }
+
+    var projetButtons = document.querySelectorAll('[data-project]');
+    for (var pb=0; pb<projetButtons.length; pb++){
+      projetButtons[pb].addEventListener('click', function(e){
+        var key = e.currentTarget.getAttribute('data-project');
+        if (projetData[key]) openModal(renderProjet(projetData[key]));
+      });
+    }
+    var blogButtons = document.querySelectorAll('[data-blog]');
+    for (var bb=0; bb<blogButtons.length; bb++){
+      blogButtons[bb].addEventListener('click', function(e){
+        var key = e.currentTarget.getAttribute('data-blog');
+        if (blogData[key]) openModal(renderBlog(blogData[key]));
+      });
+    }
+    modalClose.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+    });
+  }catch(e){}
 
   // Copy email
   try{
